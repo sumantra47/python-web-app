@@ -4,21 +4,26 @@ pipeline {
         stage('Build') {
            steps {
                 echo 'Starting build'
-                sh "sudo pip3 install -r requirements.txt"
+                sh "sudo yum -y install python3"
+                sh "sudo pip3 install --upgrade pip"
+                sh "python3 -m venv venv"
+                sh "source venv/bin/activate"
+                sh "pip3 install -r requirements.txt"
 
             }
         }
         stage('Test') {
             steps {
-                echo 'Starting Testing '
-                sh "export PYTHONPATH=src"
-                sh "pytest"
+                echo 'Starting Testing'
+                sh ". ~/.bashrc; /var/lib/jenkins/.local/bin/pytest"
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Starting deployment '
-                sh "python  src/app.py"
+                echo "Stopping any current running app"
+                sh "nohup kill \$(ps -ef | grep /src/app.py | grep -v grep | awk '{print \$2}') &"
+                echo 'Starting deployment'
+                sh "JENKINS_NODE_COOKIE=dontKillMe nohup python3 src/app.py &"
             }
         }
         stage('Release') {
