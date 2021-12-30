@@ -1,4 +1,4 @@
-# python-web-app-- using Git SCM jenkinsfile
+# python-web-app-- using Git SCM
 Python app for CI CD
 
 
