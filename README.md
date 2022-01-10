@@ -1,4 +1,5 @@
-# python-web-app-- using Git SCMii
+# python-web-app-- using Git SCM
+
 Python app for CI CD
 
 
